@@ -142,7 +142,7 @@ EOF
 
 if [ -f "${SHARED_DIR}/cluster-type" ] ; then
     CLUSTER_TYPE=$(cat "${SHARED_DIR}/cluster-type")
-    if [[ "$CLUSTER_TYPE" == "osd" ]] || [[ "$CLUSTER_TYPE" == "rosa" ]] || [[ "$CLUSTER_TYPE" == "hypershift-guest" ]]; then
+    if [[ "$CLUSTER_TYPE" == "osd" ]] || [[ "$CLUSTER_TYPE" == "rosa" ]]; then
         echo "Skip the step. The managed clusters generate the testing accounts by themselves"
         exit 0
     fi
