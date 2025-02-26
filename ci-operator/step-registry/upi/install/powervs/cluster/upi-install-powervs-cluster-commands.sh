@@ -168,9 +168,9 @@ function cleanup_prior() {
     echo "Cleaning up prior runs for lease"
     # PowerVS Instances
     echo "Cleaning up target PowerVS workspace"
-    for CRN in $(ibmcloud pi workspace ls --json 2> /dev/null | jq -r --arg name "multi-arch-p-px-${POWERVS_REGION}-1" '.Payload.workspaces[] | select(.name == $name).details.crn')
+    for CRN in $(ibmcloud pi workspace ls --json 2> /dev/null | jq -r --arg name "multi-arch-p-px-${POWERVS_ZONE}-1" '.Payload.workspaces[] | select(.name == $name).details.crn')
     do
-        echo "Targetting power cloud instance"
+        echo "Targeting power cloud instance"
         ibmcloud pi workspace target "${CRN}"
 
         echo "Deleting the PVM Instances"
@@ -313,7 +313,7 @@ release_image_override    = "${TARGET_VERSION}"
 use_zone_info_for_names    = true
 use_ibm_cloud_services     = true
 ibm_cloud_vpc_name         = "${VPC_NAME}"
-private_network_mtu        = 9000
+private_network_mtu        = 1400
 ibm_cloud_vpc_subnet_name  = "sn01"
 ibm_cloud_resource_group   = "${RESOURCE_GROUP}"
 iaas_vpc_region            = "${VPC_REGION}"
@@ -333,6 +333,11 @@ EOF
 function build_upi_cluster() {
     OUTPUT="yes"
     echo "Applying terraform to build PowerVS UPI cluster"
+    while true
+    do
+        echo "sleep $(date)"
+        sleep 10s
+    done
     cd "${IBMCLOUD_HOME}"/ocp4-upi-powervs && \
         "${IBMCLOUD_HOME}"/ocp-install-dir/terraform init -no-color -upgrade && \
         "${IBMCLOUD_HOME}"/ocp-install-dir/terraform apply -auto-approve -no-color \
